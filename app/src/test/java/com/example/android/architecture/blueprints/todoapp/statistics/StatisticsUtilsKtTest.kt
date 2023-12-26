@@ -62,7 +62,7 @@ class StatisticsUtilsKtTest {
         // When the list of tasks is computed
         val result = getActiveAndCompletedStats(null)
         // Then the result is 0%
-        assertThat(result.activeTasksPercent, `is`(0))
-        assertThat(result.completedTasksPercent, `is`(0))
+        assertThat(result.activeTasksPercent, `is`(0f))
+        assertThat(result.completedTasksPercent, `is`(0f))
     }
 }
