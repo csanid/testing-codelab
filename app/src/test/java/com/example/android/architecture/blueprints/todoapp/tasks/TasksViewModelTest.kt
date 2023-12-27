@@ -3,7 +3,10 @@ package com.example.android.architecture.blueprints.todoapp.tasks
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Assert.*
+import com.example.android.architecture.blueprints.todoapp.getOrAwaitValue
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.not
+import org.hamcrest.Matchers.nullValue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,5 +24,7 @@ class TasksViewModelTest {
         // When adding a new task
         tasksViewModel.addNewTask()
         // Then the new task event is triggered
+        val value = tasksViewModel.newTaskEvent.getOrAwaitValue()
+        assertThat(value.getContentIfNotHandled(), not(nullValue()))
     }
 }
