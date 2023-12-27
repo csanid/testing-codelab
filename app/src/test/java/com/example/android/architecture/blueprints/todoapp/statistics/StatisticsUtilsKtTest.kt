@@ -3,7 +3,6 @@ package com.example.android.architecture.blueprints.todoapp.statistics
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Assert.*
 import org.junit.Test
 
 class StatisticsUtilsKtTest {
