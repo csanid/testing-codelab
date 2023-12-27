@@ -37,6 +37,7 @@ ext {
     androidXAnnotations = '1.7.1'
     appCompatVersion = '1.6.1'
     archLifecycleVersion = '2.6.2'
+    archTestingVersion = '2.1.0'
     coroutinesVersion = '1.7.1'
     cardVersion = '1.0.0'
     espressoVersion = '3.5.1'
