@@ -73,4 +73,6 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
 
     // Other dependencies
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+
 }
