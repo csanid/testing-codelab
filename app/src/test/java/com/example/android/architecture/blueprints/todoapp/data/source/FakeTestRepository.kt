@@ -1,20 +1,32 @@
 package com.example.android.architecture.blueprints.todoapp.data.source
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.android.architecture.blueprints.todoapp.data.Result
 import com.example.android.architecture.blueprints.todoapp.data.Task
+import kotlinx.coroutines.runBlocking
 
 class FakeTestRepository : TasksRepository {
+    var tasksServiceData: LinkedHashMap<String, Task> = LinkedHashMap()
+    private val observableTasks = MutableLiveData<Result<List<Task>>>()
+
     override suspend fun getTasks(forceUpdate: Boolean): Result<List<Task>> {
-        TODO("Not yet implemented")
+        return Result.Success(tasksServiceData.values.toList())
     }
 
     override suspend fun refreshTasks() {
-        TODO("Not yet implemented")
+        observableTasks.value = getTasks()
     }
 
     override fun observeTasks(): LiveData<Result<List<Task>>> {
-        TODO("Not yet implemented")
+        runBlocking { refreshTasks() }
+        return observableTasks
+    }
+
+    override suspend fun completeTask(task: Task) {
+        val completedTask = task.copy(isCompleted = true)
+        tasksServiceData[task.id] = completedTask
+        refreshTasks()
     }
 
     override suspend fun refreshTask(taskId: String) {
@@ -33,9 +45,6 @@ class FakeTestRepository : TasksRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun completeTask(task: Task) {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun completeTask(taskId: String) {
         TODO("Not yet implemented")
