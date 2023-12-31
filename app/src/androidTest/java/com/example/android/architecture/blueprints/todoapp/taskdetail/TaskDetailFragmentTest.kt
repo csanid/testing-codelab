@@ -5,22 +5,45 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.R
+import com.example.android.architecture.blueprints.todoapp.ServiceLocator
+import com.example.android.architecture.blueprints.todoapp.data.source.FakeAndroidTestRepository
+import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @MediumTest
 @RunWith(AndroidJUnit4::class)
 class TaskDetailFragmentTest {
+    private lateinit var repository: TasksRepository
+
+    @Before
+    fun initRepository() {
+        repository = FakeAndroidTestRepository()
+        ServiceLocator.tasksRepository = repository
+    }
+
+    @After
+    fun cleanupDb() = runTest {
+        ServiceLocator.resetRepository()
+    }
 
     @Test
     fun activeTaskDetails_DisplayedInUi() {
-        // Given an active (incomplete) task added to the database
-        val task = Task("Clean up living room", "Vacuum")
-        // When Details fragment is launched to display task
-        Thread.sleep(2000)
-        val bundle = TaskDetailFragmentArgs(task.id).toBundle()
-        launchFragmentInContainer<TaskDetailFragment>(bundle, R.style.AppTheme)
+        runTest {
+            // Given an active (incomplete) task added to the database
+            val task = Task("Clean up living room", "Vacuum")
+            repository.saveTask(task)
+            // When Details fragment is launched to display task
+            val bundle = TaskDetailFragmentArgs(task.id).toBundle()
+            launchFragmentInContainer<TaskDetailFragment>(bundle, R.style.AppTheme)
+            Thread.sleep(2000)
+        }
     }
 
 }
