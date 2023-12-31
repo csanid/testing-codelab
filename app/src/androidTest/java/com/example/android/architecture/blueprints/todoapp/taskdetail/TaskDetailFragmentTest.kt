@@ -40,24 +40,40 @@ class TaskDetailFragmentTest {
     }
 
     @Test
-    fun activeTaskDetails_DisplayedInUi() {
-        runTest {
-            // Given an active (incomplete) task added to the database
-            val task = Task("Vacuum bedroom", "Before 4PM")
-            repository.saveTask(task)
-            // When detail fragment is launched to display task
-            val bundle = TaskDetailFragmentArgs(task.id).toBundle()
-            launchFragmentInContainer<TaskDetailFragment>(bundle, R.style.AppTheme)
-            // Then task details are displayed on the screen
-            // Title and description are both shown and correct
-            onView(withId(R.id.task_detail_title_text)).check(matches(isDisplayed()))
-            onView(withId(R.id.task_detail_title_text)).check(matches(withText("Vacuum bedroom")))
-            onView(withId(R.id.task_detail_description_text)).check(matches(isDisplayed()))
-            onView(withId(R.id.task_detail_description_text)).check(matches(withText("Before 4PM")))
-            // Active checkbox is unchecked
-            onView(withId(R.id.task_detail_complete_checkbox)).check(matches(isDisplayed()))
-            onView(withId(R.id.task_detail_complete_checkbox)).check(matches(not(isChecked())))
-        }
+    fun activeTaskDetails_DisplayedInUi() = runTest {
+        // Given an active (incomplete) task added to the database
+        val task = Task("Vacuum bedroom", "Before 4PM")
+        repository.saveTask(task)
+        // When detail fragment is launched to display task
+        val bundle = TaskDetailFragmentArgs(task.id).toBundle()
+        launchFragmentInContainer<TaskDetailFragment>(bundle, R.style.AppTheme)
+        // Then task details are displayed on the screen
+        // Title and description are both shown and correct
+        onView(withId(R.id.task_detail_title_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_title_text)).check(matches(withText("Vacuum bedroom")))
+        onView(withId(R.id.task_detail_description_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_description_text)).check(matches(withText("Before 4PM")))
+        // Active checkbox is shown unchecked
+        onView(withId(R.id.task_detail_complete_checkbox)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_complete_checkbox)).check(matches(not(isChecked())))
     }
 
+    @Test
+    fun completedTaskDetails_DisplayedInUi() = runTest {
+        // Given a completed task added to the database
+        val task = Task("Cook dinner", "Roasted potatoes", true)
+        repository.saveTask(task)
+        // When detail fragment is launched to display task
+        val bundle = TaskDetailFragmentArgs(task.id).toBundle()
+        launchFragmentInContainer<TaskDetailFragment>(bundle, R.style.AppTheme)
+        // Then task details are displayed on the screen
+        // Title and description are both shown and correct
+        onView(withId(R.id.task_detail_title_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_title_text)).check(matches(withText("Cook dinner")))
+        onView(withId(R.id.task_detail_description_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_description_text)).check(matches(withText("Roasted potatoes")))
+        // Active checkbox is shown checked
+        onView(withId(R.id.task_detail_complete_checkbox)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_complete_checkbox)).check(matches(isChecked()))
+    }
 }
