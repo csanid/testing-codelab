@@ -67,4 +67,22 @@ class TasksFragmentTest {
             TasksFragmentDirections.actionTasksFragmentToTaskDetailFragment("id1")
         )
     }
+
+    @Test
+    fun clickAddTaskButton_navigateToAddEditFragment() {
+        // Given the home screen
+        val scenario = launchFragmentInContainer<TasksFragment>(Bundle(), R.style.AppTheme)
+        val navController = mock(NavController::class.java)
+        scenario.onFragment {
+            Navigation.setViewNavController(it.view!!, navController)
+        }
+        // When the add task button is clicked on
+        onView(withId(R.id.add_task_fab))
+            .perform(click())
+
+        // Then verify that the app navigates to the add-edit fragment
+        verify(navController).navigate(
+            TasksFragmentDirections.actionTasksFragmentToAddEditTaskFragment(null, "New Task")
+        )
+    }
 }
