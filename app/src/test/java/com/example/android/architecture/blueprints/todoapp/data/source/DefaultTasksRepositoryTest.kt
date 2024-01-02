@@ -1,12 +1,15 @@
 package com.example.android.architecture.blueprints.todoapp.data.source
 
+import com.example.android.architecture.blueprints.todoapp.MainCoroutineRule
 import com.example.android.architecture.blueprints.todoapp.data.Result.Success
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 class DefaultTasksRepositoryTest {
@@ -21,13 +24,17 @@ class DefaultTasksRepositoryTest {
     // Class under test
     private lateinit var tasksRepository: DefaultTasksRepository
 
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
+
     @Before
     fun createRepository() {
         tasksRemoteDataSource = FakeDataSource(remoteTasks.toMutableList())
         tasksLocalDataSource = FakeDataSource(localTasks.toMutableList())
         // Get a reference to the class under test
         tasksRepository = DefaultTasksRepository(
-            tasksRemoteDataSource, tasksLocalDataSource, Dispatchers.Unconfined
+            tasksRemoteDataSource, tasksLocalDataSource, Dispatchers.Main
         )
     }
 
