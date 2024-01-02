@@ -16,6 +16,7 @@
 
 package com.example.android.architecture.blueprints.todoapp.statistics
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.android.architecture.blueprints.todoapp.ServiceLocator.tasksRepository
@@ -51,10 +52,10 @@ class StatisticsViewModel(private val tasksRepository: TasksRepository) : ViewMo
 
     fun refresh() {
         _dataLoading.value = true
-            viewModelScope.launch {
-                tasksRepository.refreshTasks()
-                _dataLoading.value = false
-            }
+        viewModelScope.launch {
+            tasksRepository.refreshTasks()
+            _dataLoading.value = false
+        }
     }
 }
 
