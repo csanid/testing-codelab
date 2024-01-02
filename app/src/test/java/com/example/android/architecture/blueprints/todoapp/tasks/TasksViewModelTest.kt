@@ -74,7 +74,7 @@ class TasksViewModelTest {
     }
 
     @Test
-    fun completeTask_dataAndSnackbarUpdated() = runTest(testDispatcher) {
+    fun completeTask_dataAndSnackbarUpdated() = runTest() {
         val task = Task("Title", "Description")
         tasksRepository.addTasks(task)
         tasksViewModel.completeTask(task, true)
