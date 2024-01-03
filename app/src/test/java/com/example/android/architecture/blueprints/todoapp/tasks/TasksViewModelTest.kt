@@ -7,18 +7,13 @@ import com.example.android.architecture.blueprints.todoapp.Event
 import com.example.android.architecture.blueprints.todoapp.MainCoroutineRule
 import com.example.android.architecture.blueprints.todoapp.getOrAwaitValue
 import com.example.android.architecture.blueprints.todoapp.R
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.nullValue
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -66,7 +61,7 @@ class TasksViewModelTest {
     }
 
     @Test
-    fun completeTask_dataAndSnackbarUpdated() = runTest() {
+    fun completeTask_dataAndSnackbarUpdated() = runTest {
         val task = Task("Title", "Description")
         tasksRepository.addTasks(task)
         tasksViewModel.completeTask(task, true)

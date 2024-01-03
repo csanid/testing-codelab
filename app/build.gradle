@@ -68,6 +68,7 @@ dependencies {
     androidTestImplementation "junit:junit:$junitVersion"
 
     // Android instrumented unit tests
+    androidTestImplementation "androidx.arch.core:core-testing:$archTestingVersion"
     androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
     androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$dexMakerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
