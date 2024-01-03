@@ -39,4 +39,13 @@ class StatisticsViewModelTest {
         advanceUntilIdle()
         assertThat(statisticsViewModel.dataLoading.getOrAwaitValue(), `is`(false))
     }
+
+    @Test
+    fun loadStatisticsWhenTasksAreUnavailable_callErrorToDisplay() = runTest {
+        tasksRepository.setReturnError(true)
+        statisticsViewModel.refresh()
+        advanceUntilIdle()
+        assertThat(statisticsViewModel.empty.getOrAwaitValue(), `is`(true))
+        assertThat(statisticsViewModel.error.getOrAwaitValue(), `is`(true))
+    }
 }
