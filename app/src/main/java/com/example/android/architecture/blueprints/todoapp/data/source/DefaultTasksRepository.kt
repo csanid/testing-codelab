@@ -15,6 +15,8 @@
  */
 package com.example.android.architecture.blueprints.todoapp.data.source
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.android.architecture.blueprints.todoapp.data.Result
 import com.example.android.architecture.blueprints.todoapp.data.Result.Success
@@ -29,6 +31,9 @@ import kotlinx.coroutines.withContext
 /**
  * Concrete implementation to load tasks from the data sources into a cache.
  */
+
+private const val TAG = "InfoTasksRepository"
+
 class DefaultTasksRepository(
     private val tasksRemoteDataSource: TasksDataSource,
     private val tasksLocalDataSource: TasksDataSource,
@@ -84,7 +89,7 @@ class DefaultTasksRepository(
     override fun observeTask(taskId: String): LiveData<Result<Task>> {
         wrapEspressoIdlingResource {
             return tasksLocalDataSource.observeTask(taskId)
-        }
+       }
     }
 
     private suspend fun updateTaskFromRemoteDataSource(taskId: String) {
@@ -155,7 +160,6 @@ class DefaultTasksRepository(
             }
         }
     }
-
     override suspend fun clearCompletedTasks() {
         wrapEspressoIdlingResource {
             coroutineScope {
@@ -176,11 +180,14 @@ class DefaultTasksRepository(
         }
     }
 
+    @SuppressLint("LogNotTimber")
     override suspend fun deleteTask(taskId: String) {
         wrapEspressoIdlingResource {
             coroutineScope {
+                Log.i(TAG, "About to delete task $taskId from repository")
                 launch { tasksRemoteDataSource.deleteTask(taskId) }
                 launch { tasksLocalDataSource.deleteTask(taskId) }
+                Log.i(TAG, "Task $taskId deleted from repository")
             }
         }
     }

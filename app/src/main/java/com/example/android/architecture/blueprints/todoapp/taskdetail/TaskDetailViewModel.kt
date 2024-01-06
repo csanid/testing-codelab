@@ -15,6 +15,8 @@
  */
 package com.example.android.architecture.blueprints.todoapp.taskdetail
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.*
 import com.example.android.architecture.blueprints.todoapp.Event
@@ -28,6 +30,8 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel for the Details screen.
  */
+private const val TAG = "InfoDetailViewModel"
+
 class TaskDetailViewModel(private val tasksRepository: TasksRepository) : ViewModel() {
 
     private val _taskId = MutableLiveData<String>()
@@ -56,10 +60,13 @@ class TaskDetailViewModel(private val tasksRepository: TasksRepository) : ViewMo
         input?.isCompleted ?: false
     }
 
+    @SuppressLint("LogNotTimber")
     fun deleteTask() = viewModelScope.launch {
         _taskId.value?.let {
+            Log.i(TAG, "Deleting task with ID: $_taskId")
             tasksRepository.deleteTask(it)
             _deleteTaskEvent.value = Event(Unit)
+            Log.i(TAG, "Task deleted successfully.")
         }
     }
 
@@ -87,10 +94,13 @@ class TaskDetailViewModel(private val tasksRepository: TasksRepository) : ViewMo
         _taskId.value = taskId
     }
 
+    @SuppressLint("LogNotTimber")
     private fun computeResult(taskResult: Result<Task>): Task? {
         return if (taskResult is Success) {
+            Log.i(TAG, "Value for taskResult is ${taskResult.data}")
             taskResult.data
         } else {
+            Log.i(TAG, "Error in computeResult")
             showSnackbarMessage(R.string.loading_tasks_error)
             null
         }

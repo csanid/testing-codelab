@@ -109,7 +109,10 @@ class TasksLocalDataSource internal constructor(
         tasksDao.deleteTasks()
     }
 
+    @SuppressLint("LogNotTimber")
     override suspend fun deleteTask(taskId: String) = withContext<Unit>(ioDispatcher) {
+        Log.i(TAG, "About to delete task $taskId from local data source")
         tasksDao.deleteTaskById(taskId)
+        Log.i(TAG, "Task $taskId deleted from local data source")
     }
 }

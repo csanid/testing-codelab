@@ -16,6 +16,7 @@
 package com.example.android.architecture.blueprints.todoapp.data.source.remote
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -29,6 +30,8 @@ import kotlinx.coroutines.delay
 /**
  * Implementation of the data source that adds a latency simulating network.
  */
+
+private const val TAG = "InfoRemoteDataSource"
 object TasksRemoteDataSource : TasksDataSource {
 
     private const val SERVICE_LATENCY_IN_MILLIS = 2000L
@@ -123,6 +126,8 @@ object TasksRemoteDataSource : TasksDataSource {
     }
 
     override suspend fun deleteTask(taskId: String) {
+        Log.i(TAG, "About to delete task $taskId from remote data source")
         TASKS_SERVICE_DATA.remove(taskId)
+        Log.i(TAG, "Task $taskId deleted from remote data source")
     }
 }
