@@ -7,6 +7,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.replaceText
+import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
@@ -95,6 +96,33 @@ class TasksActivityTest {
         onView(withText("title")).check(doesNotExist())
 
         // Make sure the activity is closed before resetting the database
+        activityScenario.close()
+    }
+
+    @Test
+    fun createOneTask_deleteTask() {
+        // 1. Start TasksActivity
+        val activityScenario = ActivityScenario.launch(TasksActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+
+        // 2. Add an active task by clicking on the FAB and saving a new task
+        onView(withId(R.id.add_task_fab)).perform(click())
+        onView(withId(R.id.add_task_title_edit_text)).perform(typeText("title"))
+        onView(withId(R.id.add_task_description_edit_text)).perform(typeText("description"))
+        onView(withId(R.id.save_task_fab)).perform(click())
+
+        // 3. Open the new task in a details view
+        onView(withText("title")).perform(click())
+
+        // 4. Click delete task in menu
+        onView(withId(R.id.menu_delete)).perform(click())
+
+        // 5. Verify it was deleted
+//        onView(withId(R.id.menu_filter)).perform(click())
+//        onView(withText(R.string.nav_all)).perform(click())
+        onView(withText("title")).check(doesNotExist())
+
+        // 6. Make sure the activity is closed
         activityScenario.close()
     }
 }
