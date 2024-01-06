@@ -15,6 +15,8 @@
  */
 package com.example.android.architecture.blueprints.todoapp.data.source.local
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.android.architecture.blueprints.todoapp.data.Result
@@ -25,10 +27,13 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.lang.NullPointerException
 
 /**
  * Concrete implementation of a data source as a db.
  */
+private const val TAG = "InfoLocalDataSource"
+
 class TasksLocalDataSource internal constructor(
     private val tasksDao: TasksDao,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -40,8 +45,10 @@ class TasksLocalDataSource internal constructor(
         }
     }
 
+    @SuppressLint("LogNotTimber")
     override fun observeTask(taskId: String): LiveData<Result<Task>> {
         return tasksDao.observeTaskById(taskId).map {
+            Log.i(TAG, "Success result about to be returned for tasksDao: $tasksDao, taskId: $taskId, it: $it")
             Success(it)
         }
     }

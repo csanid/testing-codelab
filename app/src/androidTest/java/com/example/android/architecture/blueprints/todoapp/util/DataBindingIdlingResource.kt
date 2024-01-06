@@ -75,5 +75,4 @@ fun <T : Fragment> DataBindingIdlingResource.monitorFragment(
     fragmentScenario.onFragment {
         this.activity = it.requireActivity()
     }
-
 }
