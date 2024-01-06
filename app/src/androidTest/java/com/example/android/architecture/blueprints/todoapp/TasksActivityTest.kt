@@ -2,13 +2,11 @@ package com.example.android.architecture.blueprints.todoapp
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.replaceText
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -25,7 +23,6 @@ import com.example.android.architecture.blueprints.todoapp.util.DataBindingIdlin
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
 import com.example.android.architecture.blueprints.todoapp.util.monitorActivity
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import org.hamcrest.core.IsNot.not
 import org.junit.After
 import org.junit.Before

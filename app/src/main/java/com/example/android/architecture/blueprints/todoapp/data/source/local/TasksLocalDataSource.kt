@@ -27,7 +27,6 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.lang.NullPointerException
 
 /**
  * Concrete implementation of a data source as a db.
