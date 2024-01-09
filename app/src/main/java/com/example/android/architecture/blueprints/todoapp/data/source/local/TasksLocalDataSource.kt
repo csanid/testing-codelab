@@ -47,11 +47,31 @@ class TasksLocalDataSource internal constructor(
 
     @SuppressLint("LogNotTimber")
     override fun observeTask(taskId: String): LiveData<Result<Task>> {
-        return tasksDao.observeTaskById(taskId).map {
-            Log.i(TAG, "Success result about to be returned for tasksDao: $tasksDao, taskId: $taskId, it: $it")
-            Success(it)
+        return try {
+            tasksDao.observeTaskById(taskId).map {
+                Log.i(
+                    TAG,
+                    "Success result about to be returned for tasksDao: $tasksDao, taskId: $taskId, it: $it"
+                )
+                Success(it)
+            }
+        } catch (e: Exception) {
+            val errorMessage = "Error observing task with ID: $taskId"
+            Log.e(TAG, errorMessage, e)
+            // Display Snackbar or handle the error in another way
+            MutableLiveData<Result<Task>>().apply {
+                value = Error(e)
+            }
         }
     }
+
+//    @SuppressLint("LogNotTimber")
+//    override fun observeTask(taskId: String): LiveData<Result<Task>> {
+//        return tasksDao.observeTaskById(taskId).map {
+//            Log.i(TAG, "Success result about to be returned for tasksDao: $tasksDao, taskId: $taskId, it: $it")
+//            Success(it)
+//        }
+//    }
 
     override suspend fun refreshTask(taskId: String) {
         //NO-OP
@@ -117,3 +137,6 @@ class TasksLocalDataSource internal constructor(
         Log.i(TAG, "Task $taskId deleted from local data source")
     }
 }
+
+
+
