@@ -26,6 +26,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.architecture.blueprints.todoapp.EventObserver
@@ -146,10 +147,30 @@ class TasksFragment : Fragment() {
         findNavController().navigate(action)
     }
 
+//    private fun openTaskDetails(taskId: String?) {
+//        taskId?.let {
+//            val action = TasksFragmentDirections.actionTasksFragmentToTaskDetailFragment(it)
+//            findNavController().navigate(action)
+//        }
+//    }
+
     private fun openTaskDetails(taskId: String) {
-        val action = TasksFragmentDirections.actionTasksFragmentToTaskDetailFragment(taskId)
-        findNavController().navigate(action)
+        viewModel.dataLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (!isLoading) {
+                val action = TasksFragmentDirections
+                    .actionTasksFragmentToTaskDetailFragment(taskId)
+                findNavController().navigate(action)
+            } else {
+                Snackbar.make(requireView(), "Updating tasks", Snackbar.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
+
+//    private fun openTaskDetails(taskId: String) {
+//        val action = TasksFragmentDirections.actionTasksFragmentToTaskDetailFragment(taskId)
+//        findNavController().navigate(action)
+//    }
 
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
