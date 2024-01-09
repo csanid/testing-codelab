@@ -6,13 +6,16 @@ import androidx.appcompat.widget.Toolbar
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.DrawerMatchers.isClosed
 import androidx.test.espresso.contrib.DrawerMatchers.isOpen
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.example.android.architecture.blueprints.todoapp.data.Task
@@ -93,17 +96,26 @@ class AppNavigationTest {
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
         // 1. Click on the task on the list
+        onView(withText("Up button")).perform(click())
 
         // 2. Click on the edit task button
+        onView(withId(R.id.edit_task_fab)).perform(click())
 
         // 3. Confirm that if we click Up button once, we end up back at the task details page
+        onView(withContentDescription(
+            activityScenario.getToolbarNavigationContentDescription())
+        ).perform(click())
+        onView(withId(R.id.task_detail_title_text)).check(matches(isDisplayed()))
 
         // 4. Confirm that if we click Up button a second time, we end up back at the home screen
+        onView(withContentDescription(
+            activityScenario.getToolbarNavigationContentDescription())
+        ).perform(click())
+        onView(withId(R.id.tasks_container_layout)).check(matches(isDisplayed()))
 
         // When using ActivityScenario.launch(), always call close()
         activityScenario.close()
     }
-
 
     @Test
     fun taskDetailScreen_doubleBackButton() = runBlocking {
@@ -115,12 +127,18 @@ class AppNavigationTest {
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
         // 1. Click on the task on the list.
+        onView(withText("Back button")).perform(click())
 
         // 2. Click on the Edit task button.
+        onView(withId(R.id.edit_task_fab)).perform(click())
 
         // 3. Confirm that if we click Back once, we end up back at the task details page.
+        pressBack()
+        onView(withId(R.id.task_detail_title_text)).check(matches(isDisplayed()))
 
         // 4. Confirm that if we click Back a second time, we end up back at the home screen.
+        pressBack()
+        onView(withId(R.id.tasks_container_layout)).check(matches(isDisplayed()))
 
         // When using ActivityScenario.launch(), always call close()
         activityScenario.close()
