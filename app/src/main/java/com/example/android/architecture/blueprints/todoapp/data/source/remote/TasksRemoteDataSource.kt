@@ -32,6 +32,7 @@ import kotlinx.coroutines.delay
  */
 
 private const val TAG = "InfoRemoteDataSource"
+
 object TasksRemoteDataSource : TasksDataSource {
 
     private const val SERVICE_LATENCY_IN_MILLIS = 2000L
@@ -49,6 +50,7 @@ object TasksRemoteDataSource : TasksDataSource {
     override suspend fun refreshTasks() {
         observableTasks.value = getTasks()
     }
+
 
     override suspend fun refreshTask(taskId: String) {
         refreshTasks()
@@ -93,8 +95,11 @@ object TasksRemoteDataSource : TasksDataSource {
         TASKS_SERVICE_DATA[newTask.id] = newTask
     }
 
+    @SuppressLint("LogNotTimber")
     override suspend fun saveTask(task: Task) {
+        Log.i(TAG, "About to save task $task to remote data source")
         TASKS_SERVICE_DATA[task.id] = task
+        Log.i(TAG, "Task $task saved to remote data source")
     }
 
     override suspend fun completeTask(task: Task) {
@@ -125,6 +130,7 @@ object TasksRemoteDataSource : TasksDataSource {
         TASKS_SERVICE_DATA.clear()
     }
 
+    @SuppressLint("LogNotTimber")
     override suspend fun deleteTask(taskId: String) {
         Log.i(TAG, "About to delete task $taskId from remote data source")
         TASKS_SERVICE_DATA.remove(taskId)

@@ -15,6 +15,8 @@
  */
 package com.example.android.architecture.blueprints.todoapp.tasks
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.*
@@ -26,6 +28,8 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import kotlinx.coroutines.launch
+
+private const val TAG = "InfoTasksViewModel"
 
 /**
  * ViewModel for the task list screen.
@@ -162,8 +166,10 @@ class TasksViewModel(private val tasksRepository: TasksRepository) : ViewModel()
     /**
      * Called by Data Binding.
      */
+    @SuppressLint("LogNotTimber")
     fun openTask(taskId: String) {
         _openTaskEvent.value = Event(taskId)
+        Log.i(TAG, "About to open task with id $taskId")
     }
 
     fun showEditResultMessage(result: Int) {

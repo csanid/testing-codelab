@@ -25,6 +25,7 @@ import com.example.android.architecture.blueprints.todoapp.data.Result.Error
 import com.example.android.architecture.blueprints.todoapp.data.Result.Success
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -67,6 +68,26 @@ class TasksLocalDataSource internal constructor(
 
 //    @SuppressLint("LogNotTimber")
 //    override fun observeTask(taskId: String): LiveData<Result<Task>> {
+//        return try {
+//            tasksDao.observeTaskById(taskId).map {
+//                Log.i(
+//                    TAG,
+//                    "Success result about to be returned for tasksDao: $tasksDao, taskId: $taskId, it: $it"
+//                )
+//                Success(it)
+//            }
+//        } catch (e: Exception) {
+//            val errorMessage = "Error observing task with ID: $taskId"
+//            Log.e(TAG, errorMessage, e)
+//            // Display Snackbar or handle the error in another way
+//            MutableLiveData<Result<Task>>().apply {
+//                value = Error(e)
+//            }
+//        }
+//    }
+
+//    @SuppressLint("LogNotTimber")
+//    override fun observeTask(taskId: String): LiveData<Result<Task>> {
 //        return tasksDao.observeTaskById(taskId).map {
 //            Log.i(TAG, "Success result about to be returned for tasksDao: $tasksDao, taskId: $taskId, it: $it")
 //            Success(it)
@@ -95,14 +116,16 @@ class TasksLocalDataSource internal constructor(
             if (task != null) {
                 return@withContext Success(task)
             } else {
-                return@withContext Error(Exception("Task not found!"))
+                return@withContext Error(Exception("Task not found"))
             }
         } catch (e: Exception) {
             return@withContext Error(e)
         }
     }
 
+    @SuppressLint("LogNotTimber")
     override suspend fun saveTask(task: Task) = withContext(ioDispatcher) {
+        Log.i(TAG, "About to save task $task to local data source")
         tasksDao.insertTask(task)
     }
 

@@ -154,23 +154,23 @@ class TasksFragment : Fragment() {
 //        }
 //    }
 
-    private fun openTaskDetails(taskId: String) {
-        viewModel.dataLoading.observe(viewLifecycleOwner) { isLoading ->
-            if (!isLoading) {
-                val action = TasksFragmentDirections
-                    .actionTasksFragmentToTaskDetailFragment(taskId)
-                findNavController().navigate(action)
-            } else {
-                Snackbar.make(requireView(), "Updating tasks", Snackbar.LENGTH_SHORT)
-                    .show()
-            }
-        }
-    }
-
 //    private fun openTaskDetails(taskId: String) {
-//        val action = TasksFragmentDirections.actionTasksFragmentToTaskDetailFragment(taskId)
-//        findNavController().navigate(action)
+//        viewModel.dataLoading.observe(viewLifecycleOwner) { isLoading ->
+//            if (!isLoading) {
+//                val action = TasksFragmentDirections
+//                    .actionTasksFragmentToTaskDetailFragment(taskId)
+//                findNavController().navigate(action)
+//            } else {
+//                Snackbar.make(requireView(), "Updating tasks", Snackbar.LENGTH_SHORT)
+//                    .show()
+//            }
+//        }
 //    }
+
+    private fun openTaskDetails(taskId: String) {
+        val action = TasksFragmentDirections.actionTasksFragmentToTaskDetailFragment(taskId)
+        findNavController().navigate(action)
+    }
 
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel

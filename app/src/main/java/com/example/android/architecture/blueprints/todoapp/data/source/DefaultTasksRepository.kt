@@ -114,11 +114,14 @@ class DefaultTasksRepository(
         }
     }
 
+    @SuppressLint("LogNotTimber")
     override suspend fun saveTask(task: Task) {
         wrapEspressoIdlingResource {
             coroutineScope {
+                Log.i(TAG, "About to save task $task to repository")
                 launch { tasksRemoteDataSource.saveTask(task) }
                 launch { tasksLocalDataSource.saveTask(task) }
+                Log.i(TAG, "Task $task saved to repository")
             }
         }
     }
