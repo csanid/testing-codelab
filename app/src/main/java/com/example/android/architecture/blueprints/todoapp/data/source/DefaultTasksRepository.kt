@@ -86,11 +86,20 @@ class DefaultTasksRepository(
         }
     }
 
+    @SuppressLint("LogNotTimber")
     override fun observeTask(taskId: String): LiveData<Result<Task>> {
         wrapEspressoIdlingResource {
-            return tasksLocalDataSource.observeTask(taskId)
-       }
+            val task = tasksLocalDataSource.observeTask(taskId)
+            Log.i(TAG, "Repository observing task $task")
+            return task
+        }
     }
+
+//    override fun observeTask(taskId: String): LiveData<Result<Task>> {
+//        wrapEspressoIdlingResource {
+//            return tasksLocalDataSource.observeTask(taskId)
+//       }
+//    }
 
     private suspend fun updateTaskFromRemoteDataSource(taskId: String) {
         wrapEspressoIdlingResource {
