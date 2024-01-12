@@ -167,6 +167,23 @@ class TasksFragment : Fragment() {
 //        }
 //    }
 
+//    private fun openTaskDetails(taskId: String) {
+//        if (viewModel.dataLoading.value == true) {
+//            Snackbar.make(requireView(), "Updating tasks", Snackbar.LENGTH_SHORT)
+//                .show()
+//            return
+//        }
+//
+//        viewModel.dataLoading.observe(viewLifecycleOwner) { isLoading ->
+//            if (!isLoading) {
+//                val action = TasksFragmentDirections
+//                    .actionTasksFragmentToTaskDetailFragment(taskId)
+//                findNavController().navigate(action)
+//                viewModel.dataLoading.removeObservers(this)
+//            }
+//        }
+//    }
+
     private fun openTaskDetails(taskId: String) {
         val action = TasksFragmentDirections.actionTasksFragmentToTaskDetailFragment(taskId)
         findNavController().navigate(action)
